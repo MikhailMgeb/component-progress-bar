@@ -1,0 +1,15 @@
+.ProgressBar {
+    height: 24px;
+    width: 360px;
+    border-radius: 10px;
+    background-color: lightblue;
+    margin: 50px;
+}
+
+.ProgressBar-Loader {
+    width: 0%;
+    height: 100%;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, lightskyblue, blue);
+    background-size: 360px 100%;
+}
