@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { DragEvent, FC } from 'react';
 
 import { cnProgressBar } from './ProgressBar.classname';
@@ -6,31 +6,32 @@ import { cnProgressBar } from './ProgressBar.classname';
 import './ProgressBar.css';
 
 type ProgressBarProps = {
-    onFinish: (arg0: boolean) => void;
+    onFinish: () => void;
 }
 
 const ProgressBar: FC<ProgressBarProps> = ({ onFinish }) => {
     const [progress, setProgress] = useState(0);
-
-    const progressPercent = Math.round((progress * 100) / 358);
+    const loaderRef = useRef<HTMLDivElement>(null);
 
     const handleOnDragOver = (event: DragEvent) => {
-        if (progressPercent === 100) {
-            onFinish(true);
+        const currentWeightPercents = Math.round((((event.clientX - 49) * 100) / 360));
+
+        if (progress === 100) {
+            onFinish();
             return;
         }
 
-        setProgress(event.clientX - 49);
+        setProgress(currentWeightPercents);
     }
 
-    const textIndicator = 'Загружено ' + progressPercent + '%';
+    const textIndicator = 'Загружено ' + progress + '%';
 
     return (
         <div className={cnProgressBar('')} draggable onDragOver={handleOnDragOver}>
-            <div className={cnProgressBar('Loader')} style={{ width: progressPercent + '%' }} />
+            <div ref={loaderRef} className={cnProgressBar('Loader')} style={{ width: progress + '%' }} />
             <div className={cnProgressBar('Indicator')}>{textIndicator}</div>
         </div>
     );
 }
 
-export { ProgressBar };
+export { ProgressBar }

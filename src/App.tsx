@@ -7,8 +7,8 @@ import { LoadingPicture } from './components/LoadingPicture/LoadingPicture';
 const App = () => {
   const [isLoaded, setLoaded] = useState(false);
 
-  function isFinishLoading(value: boolean) {
-    setLoaded(value);
+  function isFinishLoading() {
+    setLoaded(true);
   }
 
   return (
