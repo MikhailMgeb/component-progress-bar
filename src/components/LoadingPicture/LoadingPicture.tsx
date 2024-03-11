@@ -6,13 +6,13 @@ import imageComplete from '../../assets/image-complete.png';
 import './LoadingPicture.css';
 
 type LoadingPictureProps = {
-    isLoading: boolean;
+    isFinish: boolean;
 }
 
-const LoadingPicture: FC<LoadingPictureProps> = ({ isLoading }) => {
+const LoadingPicture: FC<LoadingPictureProps> = ({ isFinish }) => {
     return (
         <>
-            {isLoading ? <img src={imageComplete} className={cnLoadingPicture('Image')} alt='loading' /> : undefined}
+            {isFinish ? <img src={imageComplete} className={cnLoadingPicture('Image')} alt='loading' /> : undefined}
         </>
     );
 }
