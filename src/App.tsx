@@ -5,17 +5,17 @@ import { ProgressBar } from './components/ProgressBar/ProgressBar';
 import { LoadingPicture } from './components/LoadingPicture/LoadingPicture';
 
 const App = () => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
 
-  function isFinishLoading(value: boolean) {
-    setLoading(value);
+  function isFinishLoading() {
+    setLoaded(true);
   }
 
   return (
     <div className="App">
-      <ProgressBar progressLoading={isFinishLoading} />
+      <ProgressBar onFinish={isFinishLoading} />
 
-      <LoadingPicture isLoading={isLoading} />
+      <LoadingPicture isFinish={isLoaded} />
     </div>
   );
 }
