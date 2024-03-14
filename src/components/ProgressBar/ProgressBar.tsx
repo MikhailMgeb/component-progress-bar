@@ -9,12 +9,18 @@ type ProgressBarProps = {
     onFinish: () => void;
 }
 
+function getPercentFromNumber(eventWidth: number, parentWidth: number) {
+    return Math.round((((eventWidth - 49) * 100) / parentWidth));
+}
+
 const ProgressBar: FC<ProgressBarProps> = ({ onFinish }) => {
     const [progress, setProgress] = useState(0);
-    const loaderRef = useRef<HTMLDivElement>(null);
+    const progressBarRef = useRef<HTMLDivElement>(null);
 
     const handleOnDragOver = (event: DragEvent) => {
-        const currentWeightPercents = Math.round((((event.clientX - 49) * 100) / 360));
+        const progressBarCurrent = progressBarRef.current as HTMLElement;
+
+        const currentWeightPercents = getPercentFromNumber(event.clientX, progressBarCurrent.clientWidth);
 
         if (progress === 100) {
             onFinish();
@@ -27,8 +33,8 @@ const ProgressBar: FC<ProgressBarProps> = ({ onFinish }) => {
     const textIndicator = 'Загружено ' + progress + '%';
 
     return (
-        <div className={cnProgressBar('')} draggable onDragOver={handleOnDragOver}>
-            <div ref={loaderRef} className={cnProgressBar('Loader')} style={{ width: progress + '%' }} />
+        <div className={cnProgressBar('')} draggable onDragOver={handleOnDragOver} ref={progressBarRef}>
+            <div className={cnProgressBar('Loader')} style={{ width: progress + '%' }} />
             <div className={cnProgressBar('Indicator')}>{textIndicator}</div>
         </div>
     );
