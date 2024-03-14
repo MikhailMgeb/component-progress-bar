@@ -9,6 +9,10 @@ type ProgressBarProps = {
     onFinish: () => void;
 }
 
+function getPercentFromNumber(eventWidth: number, parentWidth: number) {
+    return Math.round((((eventWidth - 49) * 100) / parentWidth));
+}
+
 const ProgressBar: FC<ProgressBarProps> = ({ onFinish }) => {
     const [progress, setProgress] = useState(0);
     const progressBarRef = useRef<HTMLDivElement>(null);
@@ -16,7 +20,7 @@ const ProgressBar: FC<ProgressBarProps> = ({ onFinish }) => {
     const handleOnDragOver = (event: DragEvent) => {
         const progressBarCurrent = progressBarRef.current as HTMLElement;
 
-        const currentWeightPercents = Math.round((((event.clientX - 49) * 100) / progressBarCurrent.clientWidth));
+        const currentWeightPercents = getPercentFromNumber(event.clientX, progressBarCurrent.clientWidth);
 
         if (progress === 100) {
             onFinish();
