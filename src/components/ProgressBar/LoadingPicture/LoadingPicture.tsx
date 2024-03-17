@@ -11,7 +11,7 @@ type LoadingPictureProps = {
 
 const LoadingPicture: FC<LoadingPictureProps> = ({ isLoaded }) => {
     return (
-        <div>
+        <div className={cnProgressBar('ContainerImage')}>
             {isLoaded ? <img src={imageLoaded} className={cnProgressBar('Image')} alt='loading' /> : undefined}
         </div>
     );

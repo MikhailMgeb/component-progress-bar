@@ -1,35 +1,61 @@
-import React, { useRef, useState } from 'react';
-import type { DragEvent } from 'react';
+import React, { useState } from 'react';
+import type { MouseEvent } from 'react';
 
 import { cnProgressBar } from './ProgressBar.classname';
 import { LoadingPicture } from './LoadingPicture/LoadingPicture';
 
 import './ProgressBar.css';
 
-function getPercentFromNumber(eventWidth: number, parentWidth: number) {
-    return Math.round((((eventWidth - 49) * 100) / parentWidth));
+function getPercentFromNumber(eventWidth: number) {
+    return Math.round(((eventWidth * 100) / 360));
 }
 
 const ProgressBar = () => {
-    const [progress, setProgress] = useState(0);
-    const progressBarRef = useRef<HTMLDivElement>(null);
+    const [progress, setProgress] = useState({
+        isPressMouse: false,
+        isFinish: false,
+        progress: 0
+    });
 
-    const handleOnDragOver = (event: DragEvent) => {
-        const progressBarCurrent = progressBarRef.current as HTMLElement;
+    const handleMouseProgress = (event: MouseEvent<HTMLElement>) => {
+        if (progress.progress === 100) {
+            return;
+        }
 
-        const currentWeightPercents = getPercentFromNumber(event.clientX, progressBarCurrent.clientWidth);
+        const target = event.target as HTMLElement;
+        let offsetX = event.clientX - target.offsetLeft;
 
-        setProgress(currentWeightPercents);
+        if (progress.isPressMouse === true && progress.isFinish === false) {
+            const progressPercent = getPercentFromNumber(offsetX);
+            setProgress((prev) => ({ ...prev, progress: progressPercent }));
+        } else {
+            return
+        }
     }
 
-    const textIndicator = 'Загружено ' + progress + '%';
+    const handleMouseDown = () => {
+        setProgress(prev => ({ ...prev, isPressMouse: true }))
+    }
+
+    const handleMouseUp = () => {
+        setProgress(prev => ({ ...prev, isPressMouse: false }))
+    }
+
+    const textIndicator = 'Загружено ' + progress.progress + '%';
 
     return (
-        <div className={cnProgressBar('')} draggable onDragOver={handleOnDragOver} ref={progressBarRef}>
-            <div className={cnProgressBar('Loader')} style={{ width: progress + '%' }} />
-            <div className={cnProgressBar('Indicator')}>{textIndicator}</div>
-            <LoadingPicture isLoaded={progress === 100} />
+        <div className={cnProgressBar('')}>
+            <div className={cnProgressBar('Container')}
+                onMouseMove={handleMouseProgress}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+            >
+                <div className={cnProgressBar('Loader')} style={{ width: progress.progress + '%' }} />
+                <div className={cnProgressBar('Indicator')}>{textIndicator}</div>
+                <LoadingPicture isLoaded={progress.progress === 100} />
+            </div>
         </div>
+
     );
 }
 
