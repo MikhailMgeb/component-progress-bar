@@ -1,9 +1,6 @@
 .ProgressBar {
-    margin-left: auto;
-    margin-right: auto;
     width: 360px;
 }
-
 
 .ProgressBar-Container {
     box-sizing: border-box;
