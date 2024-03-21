@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import type { FC, MouseEvent } from 'react';
 
 import { cnProgressBar } from './ProgressBar.classname';
-import { LoadingPicture } from '../LoadingPicture/LoadingPicture';
 
 import './ProgressBar.css';
 
