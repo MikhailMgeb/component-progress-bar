@@ -15,10 +15,7 @@ type ProgressBarProps = {
 }
 
 const ProgressBar: FC<ProgressBarProps> = ({ onProgress, progress }) => {
-    const [isProcess, setProcess] = useState({
-        isStart: false,
-        isFinish: false,
-    });
+    const [isActive, setIsActive] = useState(false);
 
     const handleMouseProgress = (event: MouseEvent<HTMLElement>) => {
         if (progress === 100) {
@@ -26,22 +23,21 @@ const ProgressBar: FC<ProgressBarProps> = ({ onProgress, progress }) => {
         }
 
         const target = event.target as HTMLElement;
+
         let offsetX = event.clientX - target.offsetLeft;
 
-        if (isProcess.isStart === true && isProcess.isFinish === false) {
+        if (isActive === true) {
             const progressPercent = getPercentFromNumber(offsetX);
             onProgress(progressPercent);
-        } else {
-            return
         }
     }
 
     const handleMouseDown = () => {
-        setProcess(prev => ({ ...prev, isStart: true }));
+        setIsActive((true));
     }
 
     const handleMouseUp = () => {
-        setProcess(prev => ({ ...prev, isStart: false }));
+        setIsActive((false));
     }
 
     const textIndicator = 'Загружено ' + progress + '%';
